@@ -1,20 +1,55 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import axios from "axios";
 
 
-export default function LogIn () {
+export default function LogIn (props) {
 
+    const { setToken } = props
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [boolean, setBoolean] = useState(false)
+    const history = useHistory()
     
+    
+    function tryLogin () {
+        setBoolean(true)
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
+        {email: email, password: password})
+
+        request.then(() => loginSucess())
+
+        request.catch(() => loginFailed())
+    }
+
+    function loginSucess (response) {
+        //setToken(response.data.token)
+        history.push("/hoje")
+    }
+
+    function loginFailed () {
+        alert("Login ou senha inválido");
+        setBoolean(false);
+    }
 
     return (
         <Page>
             <img src="img/logo.png" />
             <Form>
-                <input type="text" placeholder="email" />
-                <input type="password" placeholder="senha" />
-                <button>Entrar</button>
-            </Form>
+                <input  onChange={(event) => setEmail(event.target.value)} 
+                        type="text" 
+                        placeholder="email" 
+                        disabled={boolean}/>
 
+                <input  onChange={(event) => setPassword(event.target.value)} 
+                        type="password" 
+                        placeholder="senha" 
+                        disabled={boolean}/>
+
+                <button onClick={tryLogin}>Entrar</button>
+            </Form>
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
@@ -47,11 +82,13 @@ const Form = styled.div `
         width:100%;
         height: 45px;
         border: 1px solid #D5D5D5;
-        color: #DBDBDB;
         border-radius: 5px;
         margin-bottom: 6px;
         padding-left: 11px;
         font-size: 20px;
+    }
+    ::placeholder {
+        color: #DBDBDB;
     }
     
     button {

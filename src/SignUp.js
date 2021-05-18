@@ -9,6 +9,7 @@ export default function SignUp () {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    const [boolean, setBoolean] = useState(false);
 
     const history = useHistory()
 
@@ -20,19 +21,44 @@ export default function SignUp () {
     }
 
     function sendData () {
+
+        setBoolean(true);
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", data);
 
         request.then(() => history.push("/"))
+        
+        request.catch(registrationFailed)
+    }
+
+    function registrationFailed () {
+        alert("O cadastro falhou");
+        setBoolean(false);
     }
 
     return (
         <Page>
             <img src="img/logo.png" />
             <Form>
-                <input onChange={(event) => setEmail(event.target.value)} type="text" placeholder="email" />
-                <input onChange={(event) => setPassword(event.target.value)} type="password" placeholder="senha" />
-                <input onChange={(event) => setName(event.target.value)} type="text" placeholder="nome" />
-                <input onChange={(event) => setImage(event.target.value)} type="text" placeholder="foto" />
+                <input  onChange={(event) => setEmail(event.target.value)} 
+                        type="text" 
+                        placeholder="email" 
+                        disabled={boolean}/>
+
+                <input  onChange={(event) => setPassword(event.target.value)} 
+                        type="password" 
+                        placeholder="senha" 
+                        disabled={boolean}/>
+
+                <input  onChange={(event) => setName(event.target.value)} 
+                        type="text" 
+                        placeholder="nome" 
+                        disabled={boolean}/>
+
+                <input  onChange={(event) => setImage(event.target.value)} 
+                        type="text" 
+                        placeholder="foto" 
+                        disabled={boolean}/>
+
                 <button onClick={sendData}>Cadastrar</button>
             </Form>
 
@@ -76,6 +102,7 @@ const Form = styled.div `
     ::placeholder {
         color: #DBDBDB;
     }
+
     button {
         width:100%;
         height: 45px;
