@@ -1,12 +1,18 @@
 import styled from 'styled-components';
+import React, { useContext } from 'react';
+import UserContext from './UserContext';
 
 export default function Header () {
+
+    const { user } = useContext(UserContext);
+    console.log(user)
+
     return (
         <Top>
             <h1>
                 TrackIt
             </h1>
-            <img src="img/profilePic" />
+            <img src={user.image} />
         </Top>
     )
 }
@@ -18,7 +24,7 @@ const Top = styled.div`
     display: flex;
     justify-content: space-between;
     align-items:center;
-    padding: 0 10px 0 18px;
+    padding: 0 18px 0 18px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     position: fixed;
     top: 0;

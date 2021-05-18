@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from "axios";
+import UserContext from './UserContext';
+
+
 
 
 export default function LogIn (props) {
 
-    const { setToken } = props
+    const { user, setUser } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [boolean, setBoolean] = useState(false)
@@ -25,7 +28,7 @@ export default function LogIn (props) {
     }
 
     function loginSucess (response) {
-        setToken(response.data.token)
+        setUser(response.data)
         history.push("/hoje")
     }
 

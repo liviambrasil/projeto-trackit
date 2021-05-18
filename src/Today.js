@@ -1,7 +1,12 @@
 import styled from 'styled-components';
-import Habits from "./Habits"
+import Habits from "./Habits";
+import React, { useContext } from 'react';
+import UserContext from './UserContext';
 
-export default function Today (props) {
+
+export default function Today () {
+
+
     return (
         <TodayPage>
             <h1>
@@ -21,7 +26,7 @@ const TodayPage = styled.div `
     margin-top: 68px;
     width:100%;
     background: #f2f2f2;
-    padding-left: 17px;
+    padding: 0 17px;
 
     > h1{
         padding-top: 30px;
