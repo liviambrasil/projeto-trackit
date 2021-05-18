@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
 
-import SignUp from "./SignUp"
 
 export default function LogIn () {
     return (
         <Page>
             <img src="img/logo.png" />
-            <LogInForm>
+            <Form>
                 <input type="text" placeholder="email" />
                 <input type="password" placeholder="senha" />
                 <button>Entrar</button>
-            </LogInForm>
+            </Form>
 
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
@@ -33,7 +32,7 @@ const Page = styled.div `
         color: #52B6FF;
     }
 `
-const LogInForm = styled.div `
+const Form = styled.div `
     width: 303px;
     display: flex;
     flex-direction:column;
@@ -48,7 +47,10 @@ const LogInForm = styled.div `
         color: #DBDBDB;
         border-radius: 5px;
         margin-bottom: 6px;
+        padding-left: 11px;
+        font-size: 20px;
     }
+    
     button {
         width:100%;
         height: 45px;

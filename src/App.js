@@ -17,6 +17,9 @@ export default function App () {
                 <Route path="/" exact>
                     <LogIn />
                 </Route>
+                <Route path="/cadastro">
+                    <SingUp />
+                </Route>
             </Switch>
         </BrowserRouter>
     )
