@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -9,6 +9,8 @@ export default function SignUp () {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+
+    const history = useHistory()
 
     const data = {
         email: email,
@@ -20,7 +22,7 @@ export default function SignUp () {
     function sendData () {
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", data);
 
-        request.then(console.log(request))
+        request.then(() => history.push("/"))
     }
 
     return (

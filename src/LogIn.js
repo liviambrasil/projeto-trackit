@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 
 
 export default function LogIn () {
+
+    
+
     return (
         <Page>
             <img src="img/logo.png" />
