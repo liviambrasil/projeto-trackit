@@ -25,6 +25,7 @@ export default function App () {
                     <SingUp />
                 </Route>
                 <Route path="/hoje">
+                    <Header />
                     <Today token={token}/>
                 </Route>
             </Switch>

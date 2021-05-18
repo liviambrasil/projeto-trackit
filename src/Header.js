@@ -14,7 +14,7 @@ export default function Header () {
 const Top = styled.div`
     width: 100%;
     height: 70px;
-    color: #126BA5;
+    background: #126BA5;
     display: flex;
     justify-content: space-between;
     align-items:center;

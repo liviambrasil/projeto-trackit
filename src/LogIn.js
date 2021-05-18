@@ -19,13 +19,13 @@ export default function LogIn (props) {
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
         {email: email, password: password})
 
-        request.then(() => loginSucess())
+        request.then(loginSucess)
 
-        request.catch(() => loginFailed())
+        request.catch(loginFailed)
     }
 
     function loginSucess (response) {
-        //setToken(response.data.token)
+        setToken(response.data.token)
         history.push("/hoje")
     }
 
