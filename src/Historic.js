@@ -1,5 +1,7 @@
 
 
 export default function Historic () {
-    return
+    return (
+        <div></div>
+    )
 }

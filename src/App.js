@@ -27,6 +27,7 @@ export default function App () {
                 <Route path="/hoje">
                     <Header />
                     <Today token={token}/>
+                    <Menu />
                 </Route>
             </Switch>
         </BrowserRouter>
