@@ -10,6 +10,7 @@ export default function Habits () {
     const [newHabit, setNewHabit] = useState("")
     const [boolean, setBoolean] = useState("")
     const [habits, setHabits] = useState([])
+    const [displayForm, setDisplayForm] = useState(false)
 
     const config = {headers: {"Authorization": `Bearer ${token}`}}
 
@@ -25,30 +26,33 @@ export default function Habits () {
         <HabitPage>
             <MyHabits>
                 <h1>Meus hábitos</h1>
-                <button>+</button>
+                <button onClick={() => setDisplayForm(true)}>+</button>
             </MyHabits>
-            <AddHabit />
-            <Habit />
+            <AddHabit displayForm={displayForm}/>
+            <Habit habits={habits}/>
             <NoHabit habits={habits}/>
         </HabitPage>
     )
 
     function AddHabit () {
-        return (
-            <AddHabitsDiv>
-                <input onChange={(event) => setNewHabit(event.target.value)} 
-                            type="text" 
-                            placeholder="nome do hábito" 
-                            disabled={boolean}/>
-                <button>D</button>
-                <button>S</button>
-                <button>T</button>
-                <button>Q</button>
-                <button>Q</button>
-                <button>S</button>
-                <button>S</button>
-            </AddHabitsDiv>
-        )
+        if (displayForm){
+            return (
+                <AddHabitsDiv>
+                    <input onChange={(event) => setNewHabit(event.target.value)} 
+                                type="text" 
+                                placeholder="nome do hábito" 
+                                disabled={boolean}/>
+                    <button>D</button>
+                    <button>S</button>
+                    <button>T</button>
+                    <button>Q</button>
+                    <button>Q</button>
+                    <button>S</button>
+                    <button>S</button>
+                </AddHabitsDiv>
+            )
+        }
+        else { return (<> </>)}
     }        
 }
 
@@ -68,7 +72,12 @@ function NoHabit (props) {
     }
 }
 
-function Habit () {
+function Habit (props) {
+    const { habits } = props
+    if(habits.length === 0 || habits === undefined) {
+        return (<> </>)
+    }
+    else {
     return (
         <HabitDiv>
             <h1>Nome do hábito</h1>
@@ -83,7 +92,7 @@ function Habit () {
             </Days>
             <img src="img/trash.png" />
         </HabitDiv>
-    )
+    )}
 }
 
 //styled component
