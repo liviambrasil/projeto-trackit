@@ -8,16 +8,17 @@ export default function Habits () {
     const { user } = useContext(UserContext);
     const { token } = user;
     const [newHabit, setNewHabit] = useState("")
-    const [boolean, setBoolean] = useState("")
+    const [habitDays, setHabitsDays] = useState([])
+    const [boolean, setBoolean] = useState(false)
     const [habits, setHabits] = useState([])
     const [displayForm, setDisplayForm] = useState(false)
+
 
     const config = {headers: {"Authorization": `Bearer ${token}`}}
 
     useEffect (() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config);
         request.then(response => {setHabits(response.data)
-            //console.log(habits)
         })
     }
     , []);
@@ -33,22 +34,27 @@ export default function Habits () {
             <NoHabit habits={habits}/>
         </HabitPage>
     )
-
     function AddHabit () {
         if (displayForm){
             return (
                 <AddHabitsDiv>
-                    <input onChange={(event) => setNewHabit(event.target.value)} 
-                                type="text" 
-                                placeholder="nome do hábito" 
-                                disabled={boolean}/>
-                    <button>D</button>
-                    <button>S</button>
-                    <button>T</button>
-                    <button>Q</button>
-                    <button>Q</button>
-                    <button>S</button>
-                    <button>S</button>
+                    <input  onChange={(event) => setNewHabit(event.target.value)}
+                            type="text" 
+                            placeholder="nome do hábito" 
+                            disabled={boolean} />
+                    <Days>
+                        <button onClick={() => setHabitsDays([...habitDays, 1])} disabled={boolean}>D</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 2])} disabled={boolean}>S</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 3])} disabled={boolean}>T</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 4])} disabled={boolean}>Q</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 5])} disabled={boolean}>Q</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 6])} disabled={boolean}>S</button>
+                        <button onClick={() => setHabitsDays([...habitDays, 7])} disabled={boolean}>S</button>
+                    </Days>
+                    <Commands>
+                        <p>Cancelar</p>
+                        <button onClick={()=>SaveHabit(habitDays, newHabit, config)}>Salvar</button>
+                    </Commands>
                 </AddHabitsDiv>
             )
         }
@@ -93,6 +99,13 @@ function Habit (props) {
             <img src="img/trash.png" />
         </HabitDiv>
     )}
+}
+
+function SaveHabit (props) {
+    const { habitsDays, newHabit, config } = props
+    const body = { name: newHabit, days: habitsDays}
+
+    const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
 }
 
 //styled component
@@ -168,13 +181,14 @@ const NoHabits = styled.div `
         margin-top: 20px;
     }
 `
-const AddHabitsDiv = styled.div `
+const AddHabitsDiv = styled.form `
     width: 341px;
     height: 180px;
     background: #fff;
     border-radius: 5px;
     padding: 18px;
     margin-bottom: 10px;
+    position: relative;
         input {
             width:303px;
             height: 45px;
@@ -185,15 +199,30 @@ const AddHabitsDiv = styled.div `
             font-size: 20px;
             color:#666666;
         }
-        button {
-            width: 30px;
-            height: 30px;
-            background: #fff;
-            border: 1px solid #D5D5D5;
-            border-radius: 5px;
-            font-size: 20px;
-            font-weight: 400;
-            color: #DBDBDB;
-            margin-right: 4px;
-        }
+        ::placeholder {
+        color: #DBDBDB;
+    }
+`
+const Commands = styled.div `
+    display:flex;
+    align-items: center;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+
+    p {
+        color: #52B6FF;
+        font-size: 16px;
+        font-weight: 400;
+        margin-right: 23px;
+    }
+    button {
+        width:84px;
+        height: 35px;
+        background:#52B6FF;
+        border-radius: 4.5px;
+        border: none;
+        font-size: 16px;
+        color: #fff;  
+    }
 `
