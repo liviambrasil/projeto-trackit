@@ -22,7 +22,8 @@ export default function Habits () {
                 <h1>Meus hábitos</h1>
                 <button onClick={() => setDisplayForm(true)}>+</button>
             </MyHabits>
-            <AddHabit   displayForm={displayForm} setDisplayForm={setDisplayForm}
+            <AddHabit   habits={habits} setHabits={setHabits}
+                        displayForm={displayForm} setDisplayForm={setDisplayForm}
                         newHabit={newHabit} setNewHabit={setNewHabit}
                         boolean={boolean} setBoolean={setBoolean}
                         habitDays={habitDays} setHabitDays={setHabitDays}
@@ -36,7 +37,13 @@ export default function Habits () {
 
 function AddHabit (props) {
 
-    const {displayForm, setDisplayForm, newHabit, setNewHabit, boolean, setBoolean, habitDays, setHabitDays, config} = props
+    const { habits, setHabits, 
+            displayForm, setDisplayForm, 
+            newHabit, setNewHabit, 
+            boolean, setBoolean, 
+            habitDays, setHabitDays, 
+            config } = props
+
     setBoolean(false)
 
     function SaveHabit () {
@@ -47,9 +54,10 @@ function AddHabit (props) {
         console.log(body)
     
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
-        request.then(() => {setDisplayForm(false)
+        request.then((response) => {setDisplayForm(false)
                             setNewHabit("")
                             setHabitDays([])
+                            setHabits([...habits, response.data])
                             }
                         )
     }
