@@ -16,13 +16,6 @@ export default function Habits () {
 
     const config = {headers: {"Authorization": `Bearer ${token}`}}
 
-    useEffect (() => {
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config);
-        request.then(response => {setHabits(response.data)
-        })
-    }
-    , []);
-
     return (
         <HabitPage>
             <MyHabits>
@@ -35,11 +28,12 @@ export default function Habits () {
                         habitDays={habitDays} setHabitDays={setHabitDays}
                         config={config}
                         />
-            <Habit habits={habits}/>
+            <Habit habits={habits} config={config} setHabits={setHabits}/>
             <NoHabit habits={habits}/>
         </HabitPage>
     )
 }
+
 function AddHabit (props) {
 
     const {displayForm, setDisplayForm, newHabit, setNewHabit, boolean, setBoolean, habitDays, setHabitDays, config} = props
@@ -103,7 +97,14 @@ function NoHabit (props) {
     }
 }
 function Habit (props) {
-    const { habits } = props
+    const { habits, config, setHabits } = props
+
+    useEffect (() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        request.then(response => {setHabits(response.data)
+        })
+    }
+    , []);
 
     if(habits.length === 0 || habits === undefined) {
         return (<> </>)
@@ -136,10 +137,16 @@ function Habit (props) {
 //styled component
 const HabitPage = styled.div `
     width: 100%;
-    height: 100vh;
+    height: auto;
     background: #f2f2f2;
-    margin-top: 68px;
-    padding: 28px 18px;
+    margin: 68px 0 70px 0;
+    padding: 28px 0 45px 0;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    
 `
 const HabitDiv = styled.div `
     width: 341px;
@@ -179,24 +186,26 @@ const Days = styled.div `
         }
 `
 const MyHabits = styled.div `
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 20px;
-    h1 {
-        font-size: 23px;
-        font-weight: 400;
-        color: #126BA5;
-    }
-    button {
-        width: 40px;
-        height: 35px;
-        background:#52B6FF;
-        border-radius: 4.5px;
-        color: #fff;
-        font-size: 27px;
-        border:none;
-    }
+    width: 335px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+        h1 {
+            font-size: 23px;
+            font-weight: 400;
+            color: #126BA5;
+        }
+        button {
+            width: 40px;
+            height: 35px;
+            background:#52B6FF;
+            border-radius: 4.5px;
+            color: #fff;
+            font-size: 27px;
+            border:none;
+        }
 `
 const NoHabits = styled.div `
     h1{
@@ -212,7 +221,7 @@ const AddHabitsDiv = styled.div `
     height: 180px;
     background: #fff;
     border-radius: 5px;
-    padding: 18px;
+    padding: 18px 18px 90px 18px;
     margin-bottom: 10px;
     position: relative;
         input {
