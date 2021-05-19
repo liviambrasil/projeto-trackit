@@ -55,11 +55,14 @@ function AddHabit (props) {
     
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
         request.then((response) => {setDisplayForm(false)
-                            setNewHabit("")
-                            setHabitDays([])
-                            setHabits([...habits, response.data])
-                            }
+                                    setNewHabit("")
+                                    setHabitDays([])
+                                    setHabits([...habits, response.data])
+                                    setBoolean(true)
+                                    }
                         )
+        request.catch(()=> {setBoolean(false)
+                            alert("Preencha os campos corretamente")})
     }
 
     if (displayForm){
@@ -68,7 +71,8 @@ function AddHabit (props) {
                 <input  onChange={(event) => setNewHabit(event.target.value)}
                         type="text" 
                         placeholder="nome do hábito" 
-                        disabled={boolean} />
+                        disabled={boolean} 
+                        value={newHabit}/>
                 <Days>
                     <button onClick={() => setHabitDays([...habitDays, 1])} disabled={boolean}>D</button>
                     <button onClick={() => setHabitDays([...habitDays, 2])} disabled={boolean}>S</button>
@@ -79,7 +83,8 @@ function AddHabit (props) {
                     <button onClick={() => setHabitDays([...habitDays, 7])} disabled={boolean}>S</button>
                 </Days>
                 <Commands>
-                    <p>Cancelar</p>
+                    <p onClick={()=>{setDisplayForm(false) 
+                                    setNewHabit(newHabit)}}>Cancelar</p>
                     <button onClick={SaveHabit}>
                         Salvar
                     </button>
