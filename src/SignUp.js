@@ -110,8 +110,7 @@ const Form = styled.div `
         border-radius: 5px;
         border: none;
         font-size: 20px;
-        color: #fff;
-        
+        color: #fff;      
     }
 
 `

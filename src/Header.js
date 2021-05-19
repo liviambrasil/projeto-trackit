@@ -5,7 +5,6 @@ import UserContext from './UserContext';
 export default function Header () {
 
     const { user } = useContext(UserContext);
-    console.log(user)
 
     return (
         <Top>
