@@ -29,7 +29,7 @@ export default function Habits () {
                 <h1>Meus hábitos</h1>
                 <button onClick={() => setDisplayForm(true)}>+</button>
             </MyHabits>
-            <AddHabit   displayForm={displayForm}
+            <AddHabit   displayForm={displayForm} setDisplayForm={setDisplayForm}
                         newHabit={newHabit} setNewHabit={setNewHabit}
                         boolean={boolean} setBoolean={setBoolean}
                         habitDays={habitDays} setHabitDays={setHabitDays}
@@ -40,19 +40,24 @@ export default function Habits () {
         </HabitPage>
     )
 }
-
 function AddHabit (props) {
 
-    const {displayForm, newHabit, setNewHabit, boolean, setBoolean, habitDays, setHabitDays, config} = props
+    const {displayForm, setDisplayForm, newHabit, setNewHabit, boolean, setBoolean, habitDays, setHabitDays, config} = props
+    setBoolean(false)
 
     function SaveHabit () {
+
+        setBoolean(true)
         console.log("rodou SaveHabit")
-        const { habitDays, newHabit, config } = props
         const body = { name: newHabit, days: habitDays}
         console.log(body)
     
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
-        request.then((response) => console.log(response))
+        request.then(() => {setDisplayForm(false)
+                            setNewHabit("")
+                            setHabitDays([])
+                            }
+                        )
     }
 
     if (displayForm){
@@ -82,7 +87,6 @@ function AddHabit (props) {
     }
     else { return (<> </>)}
 }       
-
 function NoHabit (props) {
     const { habits } = props
     if(habits.length === 0 || habits === undefined) {
@@ -100,33 +104,33 @@ function NoHabit (props) {
 }
 function Habit (props) {
     const { habits } = props
+
     if(habits.length === 0 || habits === undefined) {
         return (<> </>)
     }
     else {
     return (
-        <HabitDiv>
-            <h1>Nome do hábito</h1>
-            <Days>
-                <button>D</button>
-                <button>S</button>
-                <button>T</button>
-                <button>Q</button>
-                <button>Q</button>
-                <button>S</button>
-                <button>S</button>
-            </Days>
-            <img src="img/trash.png" />
-        </HabitDiv>
+            habits.map((atualHabit) => {
+                const { name, days } = atualHabit
+                return (
+                    <HabitDiv>
+                        <h1>{name}</h1>
+                        <Days>
+                            <button>D</button>
+                            <button>S</button>
+                            <button>T</button>
+                            <button>Q</button>
+                            <button>Q</button>
+                            <button>S</button>
+                            <button>S</button>
+                        </Days>
+                        <img src="img/trash.png" /> 
+                    </HabitDiv>
+                )
+            })
+            
+       
     )}
-}
-function SaveHabit (props) {
-    console.log("rodou SaveHabit")
-    const { habitDays, newHabit, config } = props
-    const body = { name: newHabit, days: habitDays}
-    console.log(props)
-
-    //const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
 }
 
 //styled component
@@ -148,6 +152,7 @@ const HabitDiv = styled.div `
     position: relative;
     padding: 15px;
     color: #666666;
+    margin-bottom: 10px;
 
     h1 {
         font-size: 20px;
