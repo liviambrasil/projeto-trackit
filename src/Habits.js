@@ -8,7 +8,7 @@ export default function Habits () {
     const { user } = useContext(UserContext);
     const { token } = user;
     const [newHabit, setNewHabit] = useState("")
-    const [habitDays, setHabitsDays] = useState([])
+    const [habitDays, setHabitDays] = useState([])
     const [boolean, setBoolean] = useState(false)
     const [habits, setHabits] = useState([])
     const [displayForm, setDisplayForm] = useState(false)
@@ -29,38 +29,59 @@ export default function Habits () {
                 <h1>Meus hábitos</h1>
                 <button onClick={() => setDisplayForm(true)}>+</button>
             </MyHabits>
-            <AddHabit displayForm={displayForm}/>
+            <AddHabit   displayForm={displayForm}
+                        newHabit={newHabit} setNewHabit={setNewHabit}
+                        boolean={boolean} setBoolean={setBoolean}
+                        habitDays={habitDays} setHabitDays={setHabitDays}
+                        config={config}
+                        />
             <Habit habits={habits}/>
             <NoHabit habits={habits}/>
         </HabitPage>
     )
-    function AddHabit () {
-        if (displayForm){
-            return (
-                <AddHabitsDiv>
-                    <input  onChange={(event) => setNewHabit(event.target.value)}
-                            type="text" 
-                            placeholder="nome do hábito" 
-                            disabled={boolean} />
-                    <Days>
-                        <button onClick={() => setHabitsDays([...habitDays, 1])} disabled={boolean}>D</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 2])} disabled={boolean}>S</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 3])} disabled={boolean}>T</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 4])} disabled={boolean}>Q</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 5])} disabled={boolean}>Q</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 6])} disabled={boolean}>S</button>
-                        <button onClick={() => setHabitsDays([...habitDays, 7])} disabled={boolean}>S</button>
-                    </Days>
-                    <Commands>
-                        <p>Cancelar</p>
-                        <button onClick={()=>SaveHabit(habitDays, newHabit, config)}>Salvar</button>
-                    </Commands>
-                </AddHabitsDiv>
-            )
-        }
-        else { return (<> </>)}
-    }        
 }
+
+function AddHabit (props) {
+
+    const {displayForm, newHabit, setNewHabit, boolean, setBoolean, habitDays, setHabitDays, config} = props
+
+    function SaveHabit () {
+        console.log("rodou SaveHabit")
+        const { habitDays, newHabit, config } = props
+        const body = { name: newHabit, days: habitDays}
+        console.log(body)
+    
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
+        request.then((response) => console.log(response))
+    }
+
+    if (displayForm){
+        return (
+            <AddHabitsDiv>
+                <input  onChange={(event) => setNewHabit(event.target.value)}
+                        type="text" 
+                        placeholder="nome do hábito" 
+                        disabled={boolean} />
+                <Days>
+                    <button onClick={() => setHabitDays([...habitDays, 1])} disabled={boolean}>D</button>
+                    <button onClick={() => setHabitDays([...habitDays, 2])} disabled={boolean}>S</button>
+                    <button onClick={() => setHabitDays([...habitDays, 3])} disabled={boolean}>T</button>
+                    <button onClick={() => setHabitDays([...habitDays, 4])} disabled={boolean}>Q</button>
+                    <button onClick={() => setHabitDays([...habitDays, 5])} disabled={boolean}>Q</button>
+                    <button onClick={() => setHabitDays([...habitDays, 6])} disabled={boolean}>S</button>
+                    <button onClick={() => setHabitDays([...habitDays, 7])} disabled={boolean}>S</button>
+                </Days>
+                <Commands>
+                    <p>Cancelar</p>
+                    <button onClick={SaveHabit}>
+                        Salvar
+                    </button>
+                </Commands>
+            </AddHabitsDiv>
+        )
+    }
+    else { return (<> </>)}
+}       
 
 function NoHabit (props) {
     const { habits } = props
@@ -77,7 +98,6 @@ function NoHabit (props) {
         return (<> </>)
     }
 }
-
 function Habit (props) {
     const { habits } = props
     if(habits.length === 0 || habits === undefined) {
@@ -100,12 +120,13 @@ function Habit (props) {
         </HabitDiv>
     )}
 }
-
 function SaveHabit (props) {
-    const { habitsDays, newHabit, config } = props
-    const body = { name: newHabit, days: habitsDays}
+    console.log("rodou SaveHabit")
+    const { habitDays, newHabit, config } = props
+    const body = { name: newHabit, days: habitDays}
+    console.log(props)
 
-    const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
+    //const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
 }
 
 //styled component
@@ -181,7 +202,7 @@ const NoHabits = styled.div `
         margin-top: 20px;
     }
 `
-const AddHabitsDiv = styled.form `
+const AddHabitsDiv = styled.div `
     width: 341px;
     height: 180px;
     background: #fff;
