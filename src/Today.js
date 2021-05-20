@@ -35,9 +35,7 @@ export default function Today () {
             <h1>
                 Dia, 00/00
             </h1>
-            <h2>
-                Nenhum hábito concluído ainda
-            </h2>
+            <VerifyHabitsList todayHabits={todayHabits}/>
             <Habit todayHabits={todayHabits}/>
         </TodayPage>
         )
@@ -71,6 +69,30 @@ function Habit (props) {
 
     else {
         return (<> </>)
+    }
+}
+
+function VerifyHabitsList (props) {
+
+    const { todayHabits } = props
+    if(todayHabits !== undefined) {
+        if (todayHabits.length === 0) {
+            return (
+                <h2>
+                    Nenhum hábito concluído ainda
+                </h2>
+            )
+        }
+        else {
+            return (
+                <h2>
+                    X% dos hábitos concluídos
+                </h2>
+            )
+        }
+    }
+    else { 
+        return ( <> </> )
     }
 }
 
