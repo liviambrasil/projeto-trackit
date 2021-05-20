@@ -36,14 +36,14 @@ export default function Today () {
                 Dia, 00/00
             </h1>
             <VerifyHabitsList todayHabits={todayHabits}/>
-            <Habit todayHabits={todayHabits}/>
+            <Habit todayHabits={todayHabits} config={config}/>
         </TodayPage>
         )
 }
 
 function Habit (props) {
     console.log("rodou habit")
-    const { todayHabits } = props
+    const { todayHabits, config } = props
     if(todayHabits !== undefined) {
         return (
             <>
@@ -57,7 +57,7 @@ function Habit (props) {
                         <p>Sequência atual: {currentSequence} dias</p>
                         <p>Seu recorde: {highestSequence} dias</p>
                     </HabitData>
-                    <button>
+                    <button onClick={() => CheckHabit(id, config, done)}>
                         <img src="img/check.png" />
                     </button>
                 </HabitDiv> 
@@ -71,7 +71,6 @@ function Habit (props) {
         return (<> </>)
     }
 }
-
 function VerifyHabitsList (props) {
 
     const { todayHabits } = props
@@ -91,8 +90,18 @@ function VerifyHabitsList (props) {
             )
         }
     }
-    else { 
+    else {
         return ( <> </> )
+    }
+}
+function CheckHabit (id, config, done) {
+    const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, config)
+    request.then(response => console.log("marcou como feito"))
+    request.catch(UnableCheck)
+
+    function UnableCheck () {
+        const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {}, config)
+        request.then(() => console.log("desmarcou como feito"))
     }
 }
 
