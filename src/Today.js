@@ -1,13 +1,36 @@
 import styled from 'styled-components';
 import Habits from "./Habits";
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import UserContext from './UserContext';
 import axios from 'axios';
+import * as dayjs from 'dayjs'
+
+
 
 export default function Today () {
 
+    console.log("rodou Today")
+    //entender lib de data
+    //dayjs.locale('pt - br')
+    //var now = dayjs()
+    //const infoDate = dayjs(now)
+    //console.log(infoDate)
+
+    const { user } = useContext(UserContext);
+    console.log(user)
+    const { token } = user;
+    const [todayHabits, setTodayHabits] = useState()
+
+    const config = {headers: {"Authorization": `Bearer ${token}`}}
+
+    useEffect (() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        request.then(response => {setTodayHabits(response.data)
+        })
+    }
+    , []);
+    
     return (
-        
         <TodayPage>
             <h1>
                 Dia, 00/00
@@ -15,36 +38,40 @@ export default function Today () {
             <h2>
                 Nenhum hábito concluído ainda
             </h2>
-            <Habit />
+            <Habit todayHabits={todayHabits}/>
         </TodayPage>
         )
 }
 
-function Habit () {
-    return (
-        <>
-            <HabitDiv>
-                <HabitData>
-                <h1>Nome do hábito</h1>
-                <p>Sequência atual: X dias</p>
-                <p>Seu recorde: X dias</p>
-                </HabitData>
-                <button>
-                    <img src="img/check.png" />
-                </button>
-            </HabitDiv>
-            <HabitDiv>
-                <HabitData>
-                <h1>Nome do hábito</h1>
-                <p>Sequência atual: X dias</p>
-                <p>Seu recorde: X dias</p>
-                </HabitData>
-                <button>
-                    <img src="img/check.png" />
-                </button>
-            </HabitDiv>
-        </>
-    )
+function Habit (props) {
+    console.log("rodou habit")
+    const { todayHabits } = props
+    if(todayHabits !== undefined) {
+        return (
+            <>
+            {todayHabits.map((atualHabit) => {
+                console.log(atualHabit)
+                const { name, done, id, currentSequence, highestSequence } = atualHabit
+                return (
+                <HabitDiv>
+                    <HabitData>
+                        <h1>{name}</h1>
+                        <p>Sequência atual: {currentSequence} dias</p>
+                        <p>Seu recorde: {highestSequence} dias</p>
+                    </HabitData>
+                    <button>
+                        <img src="img/check.png" />
+                    </button>
+                </HabitDiv> 
+                )
+            })}
+            </>
+        )
+    }
+
+    else {
+        return (<> </>)
+    }
 }
 
 //styled components

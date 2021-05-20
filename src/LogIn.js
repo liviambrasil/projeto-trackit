@@ -7,9 +7,9 @@ import UserContext from './UserContext';
 
 
 
-export default function LogIn (props) {
+export default function LogIn () {
 
-    const { user, setUser } = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [boolean, setBoolean] = useState(false)
@@ -20,7 +20,7 @@ export default function LogIn (props) {
         setBoolean(true)
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
-        {email: email, password: password})
+        {email:email, password: password})
 
         request.then(loginSucess)
 
@@ -30,6 +30,7 @@ export default function LogIn (props) {
     function loginSucess (response) {
         setUser(response.data)
         history.push("/hoje")
+        
     }
 
     function loginFailed () {

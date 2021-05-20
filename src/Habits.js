@@ -43,6 +43,8 @@ function AddHabit (props) {
             habitDays, setHabitDays, 
             config } = props
 
+    const [ActiveButton, setActiveButton] = useState(false)
+
     setBoolean(false)
 
     function SaveHabit () {
@@ -145,7 +147,6 @@ function Habit (props) {
     )}
 }
 function DeleteHabit (id, config, habits, setHabits) {
-    console.log(id)
     if (window.confirm("Você realmente deseja apagar esse hábito?")) {
         const request = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config)
         request.then(() => {
@@ -166,7 +167,6 @@ const HabitPage = styled.div `
     flex-direction: column;
     align-items: center;
 
-    
 `
 const HabitDiv = styled.div `
     width: 341px;
@@ -201,7 +201,7 @@ const Days = styled.div `
             border-radius: 5px;
             font-size: 20px;
             font-weight: 400;
-            color: #DBDBDB;
+            color: #dbdbdb;
             margin-right: 4px;
         }
 `
@@ -228,7 +228,11 @@ const MyHabits = styled.div `
         }
 `
 const NoHabits = styled.div `
+    display: flex;
+    justify-content: center;
+    align-items: center;
     h1{
+        width: 90%;
         color:#666666;
         font-size: 17.98px;
         line-height:22.47px;
@@ -281,5 +285,3 @@ const Commands = styled.div `
         color: #fff;  
     }
 `
-
-
