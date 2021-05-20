@@ -34,7 +34,6 @@ export default function Habits () {
         </HabitPage>
     )
 }
-
 function AddHabit (props) {
 
     const { habits, setHabits, 
@@ -49,6 +48,7 @@ function AddHabit (props) {
     function SaveHabit () {
 
         setBoolean(true)
+        setDisplayForm(false)
         console.log("rodou SaveHabit")
         const body = { name: newHabit, days: habitDays}
         console.log(body)
@@ -124,8 +124,8 @@ function Habit (props) {
     }
     else {
     return (
-            habits.map((atualHabit) => {
-                const { name, days } = atualHabit
+            habits.map((atualHabit, index) => {
+                const { name, days, id } = atualHabit
                 return (
                     <HabitDiv>
                         <h1>{name}</h1>
@@ -138,13 +138,20 @@ function Habit (props) {
                             <button>S</button>
                             <button>S</button>
                         </Days>
-                        <img src="img/trash.png" /> 
+                        <img onClick={()=> DeleteHabit(id, config, habits, setHabits)} src="img/trash.png" /> 
                     </HabitDiv>
                 )
             })
-            
-       
     )}
+}
+function DeleteHabit (id, config, habits, setHabits) {
+    console.log(id)
+    if (window.confirm("Você realmente deseja apagar esse hábito?")) {
+        const request = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config)
+        request.then(() => {
+                        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, config)
+                        request.then((response) => setHabits(response.data))})
+}
 }
 
 //styled component
@@ -274,3 +281,5 @@ const Commands = styled.div `
         color: #fff;  
     }
 `
+
+

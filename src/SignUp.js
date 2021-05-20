@@ -59,7 +59,7 @@ export default function SignUp () {
                         placeholder="foto" 
                         disabled={boolean}/>
 
-                <button onClick={sendData}>Cadastrar</button>
+                <button onClick={sendData} disabled={boolean}>Cadastrar</button>
             </Form>
 
             <Link to="/" exact>
@@ -102,7 +102,6 @@ const Form = styled.div `
     ::placeholder {
         color: #DBDBDB;
     }
-
     button {
         width:100%;
         height: 45px;
