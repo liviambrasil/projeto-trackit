@@ -16,10 +16,21 @@ export default function App () {
 
     const [user, setUser] = useState()
     const [todayHabits, setTodayHabits] = useState([])
+    const [porcentage, setPorcentage] = useState(0)
+    const [newHabit, setNewHabit] = useState("")
+    const [habitDays, setHabitDays] = useState([])
+    const [habits, setHabits] = useState([])
+    const [config, setConfig] = useState()
 
     return (
 
-        <UserContext.Provider value={{user, setUser, todayHabits, setTodayHabits}}>
+        <UserContext.Provider value={  {user, setUser, 
+                                        todayHabits, setTodayHabits, 
+                                        porcentage, setPorcentage,
+                                        newHabit, setNewHabit, 
+                                        habitDays, setHabitDays, 
+                                        habits, setHabits,
+                                        config, setConfig}}>
             <BrowserRouter>
                 <Switch>
                     <Route path="/" exact>
@@ -36,6 +47,11 @@ export default function App () {
                     <Route path="/habitos">
                         <Header />
                         <Habits />
+                        <Menu />
+                    </Route>
+                    <Route path="/historico">
+                        <Header />
+                        <Historic />
                         <Menu />
                     </Route>
                 </Switch>

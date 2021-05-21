@@ -2,15 +2,13 @@ import styled from 'styled-components';
 import React, { useContext, useState, useEffect } from 'react';
 import UserContext from './context/UserContext';
 import axios from 'axios'
+import Days from "./Days"
 
 export default function Habits () {
 
-    const { user } = useContext(UserContext);
+    const { user, newHabit, setNewHabit, habitDays, setHabitDays, habits, setHabits } = useContext(UserContext);
     const { token } = user;
-    const [newHabit, setNewHabit] = useState("")
-    const [habitDays, setHabitDays] = useState([])
     const [boolean, setBoolean] = useState(false)
-    const [habits, setHabits] = useState([])
     const [displayForm, setDisplayForm] = useState(false)
 
 
@@ -22,26 +20,28 @@ export default function Habits () {
                 <h1>Meus hábitos</h1>
                 <button onClick={() => setDisplayForm(true)}>+</button>
             </MyHabits>
-            <AddHabit   habits={habits} setHabits={setHabits}
-                        displayForm={displayForm} setDisplayForm={setDisplayForm}
-                        newHabit={newHabit} setNewHabit={setNewHabit}
+            <AddHabit   displayForm={displayForm} setDisplayForm={setDisplayForm}
                         boolean={boolean} setBoolean={setBoolean}
-                        habitDays={habitDays} setHabitDays={setHabitDays}
                         config={config}
                         />
-            <Habit habits={habits} config={config} setHabits={setHabits}/>
+            <Habit config={config}/>
             <NoHabit habits={habits}/>
         </HabitPage>
     )
 }
+
 function AddHabit (props) {
 
-    const { habits, setHabits, 
-            displayForm, setDisplayForm, 
-            newHabit, setNewHabit, 
+    const { habits, setHabits,
+            newHabit, setNewHabit,
+            habitDays, setHabitDays } = useContext(UserContext)
+
+    const { displayForm, setDisplayForm, 
             boolean, setBoolean, 
-            habitDays, setHabitDays, 
             config } = props
+
+    const weekdays = [{name: 'D', id: 0}, {name: 'S', id: 1},{name: 'T', id: 2},{name: 'Q', id: 3},{name: 'Q', id: 4},{name: 'S', id: 5}, {name: 'S', id: 6}]
+    const [selected, setSelected] = useState(false)
 
     const [ActiveButton, setActiveButton] = useState(false)
 
@@ -74,15 +74,15 @@ function AddHabit (props) {
                         placeholder="nome do hábito" 
                         disabled={boolean} 
                         value={newHabit}/>
-                <Days>
-                    <button onClick={() => setHabitDays([...habitDays, 0])} disabled={boolean}>D</button>
-                    <button onClick={() => setHabitDays([...habitDays, 1])} disabled={boolean}>S</button>
-                    <button onClick={() => setHabitDays([...habitDays, 2])} disabled={boolean}>T</button>
-                    <button onClick={() => setHabitDays([...habitDays, 3])} disabled={boolean}>Q</button>
-                    <button onClick={() => setHabitDays([...habitDays, 4])} disabled={boolean}>Q</button>
-                    <button onClick={() => setHabitDays([...habitDays, 5])} disabled={boolean}>S</button>
-                    <button onClick={() => setHabitDays([...habitDays, 6])} disabled={boolean}>S</button>
-                </Days>
+                <WeekDays>
+                    {weekdays.map(atualDay => {
+                        console.log(atualDay)
+                        return (
+                            <Days habitDays={habitDays} setHabitDays={setHabitDays} days={atualDay}/>
+                        )
+                        }
+                        )}
+                </WeekDays>
                 <Commands>
                     <p onClick={()=>{setDisplayForm(false) 
                                     setNewHabit(newHabit)}}>Cancelar</p>
@@ -95,6 +95,8 @@ function AddHabit (props) {
     }
     else { return (<> </>)}
 }       
+
+
 function NoHabit (props) {
     const { habits } = props
     if(habits.length === 0 || habits === undefined) {
@@ -111,7 +113,9 @@ function NoHabit (props) {
     }
 }
 function Habit (props) {
-    const { habits, config, setHabits } = props
+
+    const {config} = props
+    const {habits, setHabits} = useContext(UserContext)
 
     useEffect (() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
@@ -130,15 +134,9 @@ function Habit (props) {
                 return (
                     <HabitDiv>
                         <h1>{name}</h1>
-                        <Days>
-                            <button>D</button>
-                            <button>S</button>
-                            <button>T</button>
-                            <button>Q</button>
-                            <button>Q</button>
-                            <button>S</button>
-                            <button>S</button>
-                        </Days>
+                        <div>
+                            <Days habitDays={null} setHabitDays={null} days={days}/>
+                        </div>
                         <img onClick={()=> DeleteHabit(id, config, habits, setHabits)} src="img/trash.png" /> 
                     </HabitDiv>
                 )
@@ -180,6 +178,9 @@ const HabitDiv = styled.div `
     color: #666666;
     margin-bottom: 10px;
 
+    &>div {
+        display:flex;
+    }
     h1 {
         font-size: 20px;
         margin-bottom: 8px;
@@ -190,19 +191,23 @@ const HabitDiv = styled.div `
         right: 10px;
     }
 `
-const Days = styled.div `
-    display: flex;
-    button {
-            width: 30px;
-            height: 30px;
-            background: #fff;
-            border: 1px solid #D5D5D5;
-            border-radius: 5px;
-            font-size: 20px;
-            font-weight: 400;
-            color: #dbdbdb;
-            margin-right: 4px;
-        }
+
+const WeekDays = styled.div `
+    display:flex;
+`
+const ButtonDay = styled.div `
+    width: 30px;
+    height: 30px;
+    background: ${props => props.selected ? "#8FC549" : "#fff"};
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #dbdbdb;
+    margin-right: 4px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 `
 const MyHabits = styled.div `
     width: 335px;

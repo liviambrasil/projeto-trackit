@@ -9,11 +9,13 @@ import UserContext from './context/UserContext';
 
 export default function LogIn () {
 
-    const {user, setUser} = useContext(UserContext);
+    const {user, setUser, config, setConfig} = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [boolean, setBoolean] = useState(false)
     const history = useHistory()
+
+    
     
     
     function tryLogin () {
@@ -22,15 +24,15 @@ export default function LogIn () {
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
         {email:email, password: password})
 
-        request.then(loginSucess)
+        request.then(response => loginSucess(response.data))
 
         request.catch(loginFailed)
     }
 
     function loginSucess (response) {
-        setUser(response.data)
+        setConfig({headers: {"Authorization": `Bearer ${response.token}`}})
+        setUser(response)
         history.push("/hoje")
-        
     }
 
     function loginFailed () {
