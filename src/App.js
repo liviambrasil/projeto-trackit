@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import React, { useState } from 'react';
-import UserContext from './UserContext';
+import UserContext from './context/UserContext';
 
 import Header from "./Header"
 import Menu from "./Menu"
@@ -15,9 +15,11 @@ import Historic from "./Historic"
 export default function App () {
 
     const [user, setUser] = useState()
+    const [todayHabits, setTodayHabits] = useState([])
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+
+        <UserContext.Provider value={{user, setUser, todayHabits, setTodayHabits}}>
             <BrowserRouter>
                 <Switch>
                     <Route path="/" exact>

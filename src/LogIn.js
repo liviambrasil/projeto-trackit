@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import axios from "axios";
-import UserContext from './UserContext';
+import UserContext from './context/UserContext';
 
 
 

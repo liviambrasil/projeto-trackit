@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useContext, useState, useEffect } from 'react';
-import UserContext from './UserContext';
+import UserContext from './context/UserContext';
 import axios from 'axios'
 
 export default function Habits () {
@@ -53,7 +53,6 @@ function AddHabit (props) {
         setDisplayForm(false)
         console.log("rodou SaveHabit")
         const body = { name: newHabit, days: habitDays}
-        console.log(body)
     
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
         request.then((response) => {setDisplayForm(false)

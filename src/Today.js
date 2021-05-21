@@ -1,31 +1,31 @@
 import styled from 'styled-components';
 import Habits from "./Habits";
 import React, { useEffect, useContext, useState } from 'react';
-import UserContext from './UserContext';
+import UserContext from './context/UserContext';
 import axios from 'axios';
 import * as dayjs from 'dayjs'
+import Check from "./Check"
 
 
 
 export default function Today () {
 
-    console.log("rodou Today")
     //entender lib de data
     //dayjs.locale('pt - br')
     //var now = dayjs()
     //const infoDate = dayjs(now)
     //console.log(infoDate)
 
-    const { user } = useContext(UserContext);
-    console.log(user)
+    const { user, setTodayHabits, todayHabits } = useContext(UserContext);
     const { token } = user;
-    const [todayHabits, setTodayHabits] = useState()
 
+    
     const config = {headers: {"Authorization": `Bearer ${token}`}}
 
     useEffect (() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         request.then(response => {setTodayHabits(response.data)
+            console.log(response.data)
         })
     }
     , []);
@@ -42,14 +42,17 @@ export default function Today () {
 }
 
 function Habit (props) {
-    console.log("rodou habit")
-    const { todayHabits, config } = props
-    if(todayHabits !== undefined) {
+    const { todayHabits, config, setTodayHabits } = props
+    const [selected, setSelected] = useState(false)
+    console.log(todayHabits)
+
+    if(todayHabits.length>0) {
         return (
             <>
             {todayHabits.map((atualHabit) => {
-                console.log(atualHabit)
+                const status = []
                 const { name, done, id, currentSequence, highestSequence } = atualHabit
+
                 return (
                 <HabitDiv>
                     <HabitData>
@@ -57,9 +60,7 @@ function Habit (props) {
                         <p>Sequência atual: {currentSequence} dias</p>
                         <p>Seu recorde: {highestSequence} dias</p>
                     </HabitData>
-                    <button onClick={() => CheckHabit(id, config, done)}>
-                        <img src="img/check.png" />
-                    </button>
+                    <Check key = {atualHabit.id} id={atualHabit.id} done={atualHabit.done} config={config} setTodayHabits={setTodayHabits} />
                 </HabitDiv> 
                 )
             })}
@@ -94,14 +95,22 @@ function VerifyHabitsList (props) {
         return ( <> </> )
     }
 }
-function CheckHabit (id, config, done) {
-    const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, config)
-    request.then(response => console.log("marcou como feito"))
-    request.catch(UnableCheck)
 
-    function UnableCheck () {
+function attHabitsList (setTodayHabits, config) {
+    const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+    request.then(response => setTodayHabits(response))
+}
+
+function CheckHabit (id, config, done, selected, setSelected, setTodayHabits) {
+    const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, config)
+    request.then(() => attHabitsList(setTodayHabits, config))
+    request.catch(UncheckHabit)
+    //if (selected) {setSelected(false)}
+    //else {setSelected (true)}
+
+    function UncheckHabit () {
         const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {}, config)
-        request.then(() => console.log("desmarcou como feito"))
+        request.then(() => attHabitsList(setTodayHabits, config))
     }
 }
 
@@ -137,15 +146,8 @@ const HabitDiv = styled.div `
     justify-content: space-between;
     align-items: center;
     margin: 0 0 10px 0;
-    
-    button {
-        width: 69px;
-        height: 69px;
-        border-radius: 5px;
-        border: 1px solid #E7E7E7;
-        background: #EBEBEB;
-    }
 ` 
+
 const HabitData = styled.div `
     display: flex;
     flex-direction:column;
