@@ -8,14 +8,12 @@ import Check from "./Check"
 
 
 
+
 export default function Today () {
 
-    //entender lib de data
-    //dayjs.locale('pt - br')
-    //var now = dayjs()
-    //const infoDate = dayjs(now)
-    //console.log(infoDate)
-
+    require('dayjs/locale/pt-br')
+    const date = dayjs().locale('pt-br').format('dddd[,] DD/MM')
+    console.log(date)
     const { user, setTodayHabits, todayHabits } = useContext(UserContext);
     const { token } = user;
 
@@ -33,7 +31,7 @@ export default function Today () {
     return (
         <TodayPage>
             <h1>
-                Dia, 00/00
+                {date}
             </h1>
             <VerifyHabitsList todayHabits={todayHabits}/>
             <Habit todayHabits={todayHabits} config={config}/>
@@ -73,6 +71,8 @@ function Habit (props) {
     }
 }
 function VerifyHabitsList (props) {
+
+    
 
     const { todayHabits } = props
     if(todayHabits !== undefined) {

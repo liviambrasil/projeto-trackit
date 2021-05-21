@@ -75,13 +75,13 @@ function AddHabit (props) {
                         disabled={boolean} 
                         value={newHabit}/>
                 <Days>
-                    <button onClick={() => setHabitDays([...habitDays, 1])} disabled={boolean}>D</button>
-                    <button onClick={() => setHabitDays([...habitDays, 2])} disabled={boolean}>S</button>
-                    <button onClick={() => setHabitDays([...habitDays, 3])} disabled={boolean}>T</button>
+                    <button onClick={() => setHabitDays([...habitDays, 0])} disabled={boolean}>D</button>
+                    <button onClick={() => setHabitDays([...habitDays, 1])} disabled={boolean}>S</button>
+                    <button onClick={() => setHabitDays([...habitDays, 2])} disabled={boolean}>T</button>
+                    <button onClick={() => setHabitDays([...habitDays, 3])} disabled={boolean}>Q</button>
                     <button onClick={() => setHabitDays([...habitDays, 4])} disabled={boolean}>Q</button>
-                    <button onClick={() => setHabitDays([...habitDays, 5])} disabled={boolean}>Q</button>
+                    <button onClick={() => setHabitDays([...habitDays, 5])} disabled={boolean}>S</button>
                     <button onClick={() => setHabitDays([...habitDays, 6])} disabled={boolean}>S</button>
-                    <button onClick={() => setHabitDays([...habitDays, 7])} disabled={boolean}>S</button>
                 </Days>
                 <Commands>
                     <p onClick={()=>{setDisplayForm(false) 
