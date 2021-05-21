@@ -47,18 +47,18 @@ function Habit (props) {
         return (
             <>
             {todayHabits.map((atualHabit) => {
-                const status = []
+
                 const { name, done, id, currentSequence, highestSequence } = atualHabit
 
                 return (
                 <HabitDiv>
                     <HabitData>
                         <h1>{name}</h1>
-                        <p>Sequência atual: {currentSequence} dias</p>
-                        <p>Seu recorde: {highestSequence} dias</p>
+                        <p>Sequência atual: <Current done={done}>{currentSequence}</Current> dias</p>
+                        <p>Seu recorde: <Highest done={done} record={() => highestSequence === currentSequence ? true : false}>{highestSequence}</Highest> dias</p>
                     </HabitData>
                     <Check key = {atualHabit.id} id={atualHabit.id} done={atualHabit.done} config={config} setTodayHabits={setTodayHabits} />
-                </HabitDiv> 
+                </HabitDiv>
                 )
             })}
             </>
@@ -94,6 +94,17 @@ function VerifyHabitsList (props) {
 }
 
 //styled components
+
+const Current = styled.span `
+    font-size: 13px;
+    color: ${props => props.done ? "#8fc549" : "#bababa"}
+`
+
+const Highest = styled.span `
+    font-size: 13px;
+    color: ${props => props.done && props.record ? "#8fc549" : "#bababa"}
+`
+
 const TodayPage = styled.div `
     height: 100vh;
     margin-top: 68px;
