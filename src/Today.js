@@ -9,8 +9,9 @@ import Check from "./Check"
 export default function Today () {
     require('dayjs/locale/pt-br')
     const date = dayjs().locale('pt-br').format('dddd[,] DD/MM')
-    const { setTodayHabits, todayHabits, porcentage, config } = useContext(UserContext);
+    const { setTodayHabits, todayHabits, porcentage, user } = useContext(UserContext);
 
+    const config = {headers: {"Authorization": `Bearer ${user.token}`}}
 
     useEffect (() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
