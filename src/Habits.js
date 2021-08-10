@@ -6,7 +6,7 @@ import Days from "./Days"
 
 export default function Habits () {
 
-    const { user, newHabit, setNewHabit, habitDays, setHabitDays, habits, setHabits } = useContext(UserContext);
+    const { user, habits } = useContext(UserContext);
     const { token } = user;
     const [boolean, setBoolean] = useState(false)
     const [displayForm, setDisplayForm] = useState(false)
@@ -41,9 +41,6 @@ function AddHabit (props) {
             config } = props
 
     const weekdays = [{name: 'D', id: 0}, {name: 'S', id: 1},{name: 'T', id: 2},{name: 'Q', id: 3},{name: 'Q', id: 4},{name: 'S', id: 5}, {name: 'S', id: 6}]
-    const [selected, setSelected] = useState(false)
-
-    const [ActiveButton, setActiveButton] = useState(false)
 
     setBoolean(false)
 
@@ -51,7 +48,6 @@ function AddHabit (props) {
 
         setBoolean(true)
         setDisplayForm(false)
-        console.log("rodou SaveHabit")
         const body = { name: newHabit, days: habitDays}
     
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
@@ -76,7 +72,6 @@ function AddHabit (props) {
                         value={newHabit}/>
                 <WeekDays>
                     {weekdays.map(atualDay => {
-                        console.log(atualDay)
                         return (
                             <Days habitDays={habitDays} setHabitDays={setHabitDays} days={atualDay}/>
                         )
@@ -122,7 +117,7 @@ function Habit (props) {
         request.then(response => {setHabits(response.data)
         })
     }
-    , []);
+    , []); // eslint-disable-next-line react-hooks/exhaustive-deps
 
     if(habits.length === 0 || habits === undefined) {
         return (<> </>)
@@ -137,7 +132,7 @@ function Habit (props) {
                         <div>
                             <Days habitDays={null} setHabitDays={null} days={days}/>
                         </div>
-                        <img onClick={()=> DeleteHabit(id, config, habits, setHabits)} src="img/trash.png" /> 
+                        <img onClick={()=> DeleteHabit(id, config, habits, setHabits)} src="img/trash.png" alt="trash icon"/> 
                     </HabitDiv>
                 )
             })
@@ -195,20 +190,7 @@ const HabitDiv = styled.div `
 const WeekDays = styled.div `
     display:flex;
 `
-const ButtonDay = styled.div `
-    width: 30px;
-    height: 30px;
-    background: ${props => props.selected ? "#8FC549" : "#fff"};
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 400;
-    color: #dbdbdb;
-    margin-right: 4px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-`
+
 const MyHabits = styled.div `
     width: 335px;
     display: flex;

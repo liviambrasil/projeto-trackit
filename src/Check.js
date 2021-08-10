@@ -3,31 +3,23 @@ import axios from "axios"
 import { useContext } from 'react';
 import UserContext from './context/UserContext';
 
-export default function Check ({done, key, id, config}) {
-
-    console.log(config)
-    console.log(id)
-
-    const { setTodayHabits, todayHabits } = useContext(UserContext)
+export default function Check ({done, id, config}) {
+    const { setTodayHabits } = useContext(UserContext)
 
     return (
         <Button done={done} onClick={CheckHabit}>
-            <img src="img/check.png" />
+            <img src="img/check.png" alt="check img"/>
         </Button>
         )
 
     function CheckHabit () {
-        console.log("foi")
-        console.log(done)
 
         if(done) {
-        console.log("rodou if")
         const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {}, config)
         request.then(() => attHabitsList())
         }
 
         else {
-                console.log("rodou else")
                 const request = axios.post (`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, config)
                 request.then(() => attHabitsList())
             }

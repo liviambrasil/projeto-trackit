@@ -37,7 +37,7 @@ export default function SignUp () {
 
     return (
         <Page>
-            <img src="img/logo.png" />
+            <img src="img/logo.png" alt="logo"/>
             <Form>
                 <input  onChange={(event) => setEmail(event.target.value)} 
                         type="text" 

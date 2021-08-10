@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export default function Days ({days, habitDays, setHabitDays}) {
 
-    console.log(days)
     const arrDays = [{name: 'D', id: 0, status: false}, {name: 'S', id: 2, status: false},{name: 'T', id: 3, status: false},{name: 'Q', id: 4, status: false},{name: 'Q', id: 5, status: false},{name: 'S', id: 6, status: false}, {name: 'S', id: 7, status: false}]
     const [selected, setSelected] = useState(false)
 

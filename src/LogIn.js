@@ -1,21 +1,17 @@
 import styled from 'styled-components';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import axios from "axios";
 import UserContext from './context/UserContext';
 
 
-
-
 export default function LogIn () {
 
-    const {user, setUser, config, setConfig} = useContext(UserContext);
+    const {setUser, setConfig} = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [boolean, setBoolean] = useState(false)
     const history = useHistory()
-
-    
     
     
     function tryLogin () {
@@ -24,7 +20,8 @@ export default function LogIn () {
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
         {email:email, password: password})
 
-        request.then(response => loginSucess(response.data))
+        request.then(response => {
+            loginSucess(response.data)})
 
         request.catch(loginFailed)
     }
@@ -32,6 +29,8 @@ export default function LogIn () {
     function loginSucess (response) {
         setConfig({headers: {"Authorization": `Bearer ${response.token}`}})
         setUser(response)
+        console.log(response)
+        localStorage.setItem("user", JSON.stringify(response))
         history.push("/hoje")
     }
 
@@ -42,7 +41,7 @@ export default function LogIn () {
 
     return (
         <Page>
-            <img src="img/logo.png" />
+            <img src="img/logo.png" alt="logo"/>
             <Form>
                 <input  onChange={(event) => setEmail(event.target.value)} 
                         type="text" 

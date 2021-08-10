@@ -10,17 +10,15 @@ import Habits from "./Habits"
 import Today from "./Today"
 import Historic from "./Historic"
 
-
-
 export default function App () {
 
-    const [user, setUser] = useState()
     const [todayHabits, setTodayHabits] = useState([])
     const [porcentage, setPorcentage] = useState(0)
     const [newHabit, setNewHabit] = useState("")
     const [habitDays, setHabitDays] = useState([])
     const [habits, setHabits] = useState([])
     const [config, setConfig] = useState()
+    const [user,setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
     return (
 

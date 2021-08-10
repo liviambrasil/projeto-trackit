@@ -11,7 +11,7 @@ export default function Header () {
             <h1>
                 TrackIt
             </h1>
-            <img src={user.image} />
+            <img src={user.image} alt="user img"/>
         </Top>
     )
 }

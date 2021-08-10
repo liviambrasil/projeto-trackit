@@ -1,31 +1,23 @@
 import styled from 'styled-components';
-import Habits from "./Habits";
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import UserContext from './context/UserContext';
 import axios from 'axios';
 import * as dayjs from 'dayjs'
 import Check from "./Check"
 
 
-
-
 export default function Today () {
-
     require('dayjs/locale/pt-br')
     const date = dayjs().locale('pt-br').format('dddd[,] DD/MM')
-    console.log(date)
-    const { user, setTodayHabits, todayHabits, porcentage, config } = useContext(UserContext);
-    const { token } = user;
+    const { setTodayHabits, todayHabits, porcentage, config } = useContext(UserContext);
 
-    console.log(config)
 
     useEffect (() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         request.then(response => {setTodayHabits(response.data)
-            console.log(response.data)
         })
     }
-    , []);
+    , []); // eslint-disable-next-line react-hooks/exhaustive-deps
     
     return (
         <TodayPage>
@@ -41,14 +33,13 @@ export default function Today () {
 function Habit (props) {
     
     const { todayHabits, config, setTodayHabits } = props
-    console.log(todayHabits)
 
     if(todayHabits.length>0) {
         return (
             <>
             {todayHabits.map((atualHabit) => {
 
-                const { name, done, id, currentSequence, highestSequence } = atualHabit
+                const { name, done, currentSequence, highestSequence } = atualHabit
 
                 return (
                 <HabitDiv>
