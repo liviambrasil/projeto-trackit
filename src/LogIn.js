@@ -29,7 +29,6 @@ export default function LogIn () {
     function loginSucess (response) {
         setConfig({headers: {"Authorization": `Bearer ${response.token}`}})
         setUser(response)
-        console.log(response)
         localStorage.setItem("user", JSON.stringify(response))
         history.push("/hoje")
     }
