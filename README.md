@@ -28,15 +28,16 @@ The following tools and frameworks were used in the construction of the project:
 ## How to run
 
 1. Clone this repository
-4. Install dependencies
+2. Install dependencies
 ```bash
 npm i
 ```
-5. Run with
+3. Run with
 ```bash
 npm start
 ```
-6. You can optionally build the project running
+4. You can optionally build the project running
 ```bash
 npm run build
 ```
+5. Finally access http://localhost:3000 on your favorite browser (unless it is Internet Explorer. In this case, review your life decisions)
