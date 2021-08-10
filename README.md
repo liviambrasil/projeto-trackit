@@ -1,4 +1,4 @@
-# My Wallet
+# Track It
 
 An easy way to map and analyze your routine. Track your habits to learn how you manage your time and reach your goals faster.
 
