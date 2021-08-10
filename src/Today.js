@@ -65,9 +65,9 @@ function VerifyHabitsList (props) {
 
     const { todayHabits, porcentage} = props
     if(todayHabits !== undefined) {
-        if (porcentage === 0) {
+        if (porcentage !== Number) {
             return (
-                <H2 porcentage={porcentage}>
+                <H2 >
                     Nenhum hábito concluído ainda
                 </H2>
             )
